@@ -43,8 +43,11 @@ namespace Pix2Pix.PostProcessing
         {
             base.Init();
 
+            //const string weightFileName = "edges2cats_AtoB.pict";
+            const string weightFileName = "edges2pikachu_AtoB.pict";
+
             var filePath = System.IO.Path.Combine
-                (Application.streamingAssetsPath, "edges2cats_AtoB.pict");
+                (Application.streamingAssetsPath, weightFileName);
 
             _shader = Shader.Find("Hidden/Pix2Pix/PostProcessing");
 

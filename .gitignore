@@ -3,6 +3,8 @@ Thumbs.db
 Desktop.ini
 /*.csproj
 /*.sln
+.vs/
+obj/
 
 # macOS
 .DS_Store
