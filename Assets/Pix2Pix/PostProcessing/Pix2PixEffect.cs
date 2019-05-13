@@ -25,11 +25,11 @@ namespace Pix2Pix.PostProcessing
 
     sealed class Pix2PixRenderer : PostProcessEffectRenderer<Pix2PixEffect>
     {
-        static class ShaderIDs
-        {
-            internal static readonly int EdgeParams = Shader.PropertyToID("_EdgeParams");
-            internal static readonly int EdgeTex = Shader.PropertyToID("_EdgeTex");
-        }
+        // static class ShaderIDs
+        // {
+        //     internal static readonly int EdgeParams = Shader.PropertyToID("_EdgeParams");
+        //     internal static readonly int EdgeTex = Shader.PropertyToID("_EdgeTex");
+        // }
 
         Dictionary<string, Tensor> _weightTable;
         Generator _generator;
@@ -44,12 +44,14 @@ namespace Pix2Pix.PostProcessing
             base.Init();
 
             //const string weightFileName = "edges2cats_AtoB.pict";
-            const string weightFileName = "edges2pikachu_AtoB.pict";
+            // const string weightFileName = "edges2pikachu_AtoB.pict";
+            const string weightFileName = "facades_BtoA.pict";
+            
 
             var filePath = System.IO.Path.Combine
                 (Application.streamingAssetsPath, weightFileName);
 
-            _shader = Shader.Find("Hidden/Pix2Pix/PostProcessing");
+            _shader = Shader.Find("Hidden/Pix2Pix/PostProcessing2");
 
             _weightTable = WeightReader.ReadFromFile(filePath);
             _generator = new Generator(_weightTable);
@@ -91,13 +93,13 @@ namespace Pix2Pix.PostProcessing
             cmd.BeginSample("Pix2Pix");
 
             var sheet = context.propertySheets.Get(_shader);
-            var props = sheet.properties;
+            // var props = sheet.properties;
 
-            props.SetVector(ShaderIDs.EdgeParams, new Vector3(
-                settings.edgeThreshold,
-                settings.edgeIntensity,
-                settings.edgeOpacity
-            ));
+            // props.SetVector(ShaderIDs.EdgeParams, new Vector3(
+            //     settings.edgeThreshold,
+            //     settings.edgeIntensity,
+            //     settings.edgeOpacity
+            // ));
 
             // Edge detection pass
             cmd.BlitFullscreenTriangle(context.source, _sourceRT, sheet, 0);
@@ -111,8 +113,8 @@ namespace Pix2Pix.PostProcessing
             GpuBackend.ResetToDefaultCommandBuffer();
 
             // Composite pass
-            props.SetTexture(ShaderIDs.EdgeTex, _sourceRT);
-            cmd.BlitFullscreenTriangle(_resultRT, context.destination, sheet, 1);
+            // props.SetTexture(ShaderIDs.EdgeTex, _sourceRT);
+            cmd.BlitFullscreenTriangle(_resultRT, context.destination, sheet, 0);
 
             cmd.EndSample("Pix2Pix");
         }

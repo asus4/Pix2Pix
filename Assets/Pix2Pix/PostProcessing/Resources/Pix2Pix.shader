@@ -44,8 +44,9 @@ Shader "Hidden/Pix2Pix/PostProcessing"
     half4 FragComposite(VaryingsDefault i) : SV_Target
     {
         half4 c = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.texcoord);
-        half4 e = SAMPLE_TEXTURE2D(_EdgeTex, sampler_EdgeTex, i.texcoord);
-        return c * lerp(1, e, _EdgeParams.z);
+        // half4 e = SAMPLE_TEXTURE2D(_EdgeTex, sampler_EdgeTex, i.texcoord);
+        // return c * lerp(1, e, _EdgeParams.z);
+        return c;
     }
 
     ENDHLSL
